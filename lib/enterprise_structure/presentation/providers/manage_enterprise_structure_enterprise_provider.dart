@@ -3,7 +3,9 @@ import 'package:digify_enterprise_structure/enterprise_structure/presentation/pr
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final manageEnterpriseStructureSelectedEnterpriseProvider =
-    StateNotifierProvider<ManageEnterpriseStructureEnterpriseNotifier, int?>((ref) {
+    StateNotifierProvider<ManageEnterpriseStructureEnterpriseNotifier, int?>((
+      ref,
+    ) {
       final notifier = ManageEnterpriseStructureEnterpriseNotifier();
       wireModuleEnterpriseSelectionFromHost(ref, notifier.setEnterpriseId);
       return notifier;
@@ -18,7 +20,9 @@ class ManageEnterpriseStructureEnterpriseNotifier extends StateNotifier<int?> {
 }
 
 final manageEnterpriseStructureEnterpriseIdProvider = Provider<int?>((ref) {
-  final selected = ref.watch(manageEnterpriseStructureSelectedEnterpriseProvider);
+  final selected = ref.watch(
+    manageEnterpriseStructureSelectedEnterpriseProvider,
+  );
   final active = ref.watch(activeEnterpriseIdProvider);
   return selected ?? active;
 });

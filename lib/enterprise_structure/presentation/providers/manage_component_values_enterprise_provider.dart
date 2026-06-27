@@ -32,14 +32,22 @@ class ManageComponentValuesEnterpriseNotifier extends StateNotifier<int?> {
       _ref.read(orgUnitsTreeProvider.notifier).refresh(),
     ]);
     _ref.invalidate(orgUnitsProvider);
-    final levelCode = _ref.read(manageComponentValuesScreenProvider).selectedLevelCode;
+    final levelCode = _ref
+        .read(manageComponentValuesScreenProvider)
+        .selectedLevelCode;
     if (levelCode.isEmpty) return;
     final levels = _ref.read(manageComponentValuesActiveLevelsProvider).levels;
     if (levels.isEmpty) return;
     final structureId = levels.first.structureId;
     _ref
         .read(orgUnitsProvider(levelCode).notifier)
-        .loadOrgUnits(levelCode, structureId: structureId, enterpriseId: state, page: 1, pageSize: 10);
+        .loadOrgUnits(
+          levelCode,
+          structureId: structureId,
+          enterpriseId: state,
+          page: 1,
+          pageSize: 10,
+        );
   }
 }
 
