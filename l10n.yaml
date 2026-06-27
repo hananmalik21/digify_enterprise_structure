@@ -1,0 +1,5 @@
+arb-dir: l10n
+template-arb-file: enterprise_structure_en.arb
+output-localization-file: enterprise_structure_localizations.dart
+output-class: EnterpriseStructureLocalizations
+output-dir: lib/l10n
