@@ -9,3 +9,5 @@ pubspec.lock
 .vscode/
 _vendor/
 pubspec_overrides.yaml
+flutter_*.log
+*.log
