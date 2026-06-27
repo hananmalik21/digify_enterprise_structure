@@ -15,4 +15,21 @@ final esApiClientProvider = Provider<ApiClient>((ref) {
   );
 });
 
+final apiClientProvider = esApiClientProvider;
+
 final dioProvider = Provider<Dio>((ref) => ref.watch(esApiClientProvider).dio);
+
+List<Override> buildEsNetworkHostOverrides({
+  required String Function(Ref ref) baseUrl,
+  required AuthTokenStorage Function(Ref ref) authStorage,
+}) =>
+    [
+      apiBaseUrlProvider.overrideWith(baseUrl),
+      authTokenStorageProvider.overrideWith(authStorage),
+      esApiClientProvider.overrideWith(
+        (ref) => ApiClient(
+          baseUrl: ref.watch(apiBaseUrlProvider),
+          authStorage: authStorage(ref),
+        ),
+      ),
+    ];
