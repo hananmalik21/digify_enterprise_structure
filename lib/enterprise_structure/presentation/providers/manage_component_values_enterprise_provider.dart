@@ -4,16 +4,13 @@ import 'package:digify_enterprise_structure/enterprise_structure/presentation/pr
 import 'package:digify_enterprise_structure/enterprise_structure/presentation/providers/manage_component_values_screen_provider.dart';
 import 'package:digify_enterprise_structure/enterprise_structure/presentation/providers/org_units_provider.dart';
 import 'package:digify_enterprise_structure/enterprise_structure/presentation/providers/org_units_tree_provider.dart';
+import 'package:digify_enterprise_structure/enterprise_structure/presentation/providers/shared/es_module_enterprise_wiring.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final manageComponentValuesSelectedEnterpriseProvider =
     StateNotifierProvider<ManageComponentValuesEnterpriseNotifier, int?>((ref) {
       final notifier = ManageComponentValuesEnterpriseNotifier(ref);
-      final activeId = ref.read(activeEnterpriseIdProvider);
-      if (activeId != null) notifier.setEnterpriseId(activeId);
-      ref.listen<int?>(activeEnterpriseIdProvider, (_, next) {
-        if (next != null && !notifier.hasSelection) notifier.setEnterpriseId(next);
-      });
+      wireModuleEnterpriseSelectionFromHost(ref, notifier.setEnterpriseId);
       return notifier;
     });
 
@@ -21,8 +18,6 @@ class ManageComponentValuesEnterpriseNotifier extends StateNotifier<int?> {
   ManageComponentValuesEnterpriseNotifier(this._ref) : super(null);
 
   final Ref _ref;
-
-  bool get hasSelection => state != null;
 
   void setEnterpriseId(int? enterpriseId) {
     state = enterpriseId;
@@ -49,5 +44,7 @@ class ManageComponentValuesEnterpriseNotifier extends StateNotifier<int?> {
 }
 
 final manageComponentValuesEnterpriseIdProvider = Provider<int?>((ref) {
-  return ref.watch(manageComponentValuesSelectedEnterpriseProvider);
+  final selected = ref.watch(manageComponentValuesSelectedEnterpriseProvider);
+  final active = ref.watch(activeEnterpriseIdProvider);
+  return selected ?? active;
 });
